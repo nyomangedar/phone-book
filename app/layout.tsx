@@ -9,12 +9,9 @@ import {
     gql,
 } from "@apollo/client";
 
-const inter = Inter({ subsets: ["latin"] });
+import { ApolloWrapper } from "./lib/apollo-provider";
 
-const client = new ApolloClient({
-    uri: "https://wpe-hiring.tokopedia.net/graphql",
-    cache: new InMemoryCache(),
-});
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -29,10 +26,10 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={inter.className}>
-                <ApolloProvider client={client}>
+                <ApolloWrapper>
                     <Navbar />
                     {children}
-                </ApolloProvider>
+                </ApolloWrapper>
             </body>
         </html>
     );

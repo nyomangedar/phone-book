@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "@emotion/styled";
 import { ContactDetailType } from "../utils/ResponseType";
+import Link from "next/link";
 
 const ContactCard: React.FC<{
     fav?: boolean;
@@ -16,7 +17,9 @@ const ContactCard: React.FC<{
                 ))}
             </NumberTable>
             <NumberButtonsDiv>
-                <button>Detail</button>
+                <Link href={`/detail/${contact.id}`}>
+                    <button>Detail</button>
+                </Link>
                 <button>Edit</button>
             </NumberButtonsDiv>
         </div>
@@ -69,7 +72,7 @@ const TitleCardDiv = styled.div`
 const NumberButtonsDiv = styled.div`
     display: flex;
     justify-content: space-around;
-    margin-top: 5px;
+    margin-top: 10px;
 `;
 
 const NumberTable = styled.div`
