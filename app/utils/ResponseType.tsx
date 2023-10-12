@@ -7,7 +7,7 @@ export type ContactDetailType = {
     first_name: string;
     id: number;
     last_name: string;
-    phones: { number: number }[];
+    phones: { number: string }[];
 };
 
 export type ContactByPK = {
@@ -19,11 +19,11 @@ export type ContactByPKDetail = {
     id: number;
     first_name: string;
     created_at: string;
-    phones: { number: number }[];
+    phones: { number: string }[];
 };
 
 export type AddContactType = {
     first_name: string;
     last_name: string;
-    phones: { number: number }[];
+    phones: { number: string }[];
 };

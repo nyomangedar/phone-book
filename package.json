@@ -15,6 +15,7 @@
     "@emotion/styled": "^11.11.0",
     "graphql": "^16.8.1",
     "next": "13.5.4",
+    "phone-book": "link:",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.47.0"

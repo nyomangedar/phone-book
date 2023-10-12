@@ -23,6 +23,9 @@ dependencies:
   next:
     specifier: 13.5.4
     version: 13.5.4(react-dom@18.2.0)(react@18.2.0)
+  phone-book:
+    specifier: 'link:'
+    version: 'link:'
   react:
     specifier: ^18
     version: 18.2.0
