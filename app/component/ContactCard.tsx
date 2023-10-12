@@ -2,6 +2,7 @@ import { useState } from "react";
 import styled from "@emotion/styled";
 import { ContactDetailType } from "../utils/ResponseType";
 import Link from "next/link";
+import { FaStar, FaInfoCircle } from "react-icons/fa";
 
 const ContactCard: React.FC<{
     fav?: boolean;
@@ -18,14 +19,16 @@ const ContactCard: React.FC<{
             </NumberTable>
             <NumberButtonsDiv>
                 <Link href={`/detail/${contact.id}`}>
-                    <button>Detail</button>
+                    <DetailInfoButton>
+                        <FaInfoCircle size={20} />
+                        Detail Info
+                    </DetailInfoButton>
                 </Link>
-                <button>Edit</button>
             </NumberButtonsDiv>
         </div>
     );
     return (
-        <MainCardDiv>
+        <MainCardDiv style={{ borderBottom: "solid 1px #52616B" }}>
             <TitleCardDiv onClick={() => setSelected(contact.id)}>
                 <AvatarContainer>
                     {contact.first_name[0].toUpperCase()}
@@ -33,7 +36,11 @@ const ContactCard: React.FC<{
                 <div>
                     <p>
                         {contact.first_name} {contact.last_name}{" "}
-                        {fav && <span>Star</span>}
+                        {fav && (
+                            <span>
+                                <FaStar color={"yellow"} />
+                            </span>
+                        )}
                     </p>
                 </div>
             </TitleCardDiv>
@@ -41,7 +48,6 @@ const ContactCard: React.FC<{
         </MainCardDiv>
     );
 };
-
 const AvatarContainer = styled.div`
     height: 30px;
     width: 30px;
@@ -60,6 +66,7 @@ const MainCardDiv = styled.div`
     flex-direction: column;
     gap: 5px;
     padding: 3px;
+    border-radius: 4px;
 `;
 
 const TitleCardDiv = styled.div`
@@ -72,11 +79,22 @@ const TitleCardDiv = styled.div`
 const NumberButtonsDiv = styled.div`
     display: flex;
     justify-content: space-around;
-    margin-top: 10px;
+    margin: 1em;
 `;
 
 const NumberTable = styled.div`
-    padding-left: 1em;
+    padding-left: 1.5em;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+`;
+
+const DetailInfoButton = styled.div`
+    background-color: none;
+    display: flex;
+    align-items: center;
+    color: white;
+    gap: 5px;
 `;
 
 export default ContactCard;

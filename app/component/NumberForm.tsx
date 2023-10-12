@@ -2,6 +2,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { gql, useMutation } from "@apollo/client";
 import { ContactByPKDetail } from "../utils/ResponseType";
 import { useState } from "react";
+import styled from "@emotion/styled";
+import { FaPhone, FaEdit, FaCheck, FaTrash, FaBan } from "react-icons/fa";
 
 type NumberType = {
     number: string;
@@ -111,51 +113,119 @@ const NumberForm: React.FC<{
         setEditMode(false);
     };
     return (
-        <form
+        <FormContainer
             onSubmit={handleSubmit(onSubmit)}
             onMouseEnter={() => setOnHover(true)}
             onMouseLeave={() => setOnHover(false)}
         >
-            <div>
-                <label>Mobile</label>
-                <input
+            <InputContainer>
+                <Label>
+                    <FaPhone /> Mobile
+                </Label>
+                <StyledInput
                     disabled={!editMode}
                     {...register("number", {
                         pattern: /^[0-9+]+$/,
                     })}
                 />
-                {errors.number && errors.number.type == "pattern" && (
-                    <span>Invalid phone number</span>
-                )}
-                {errors.number && errors.number.type == "custom" && (
-                    <span>Number already exists</span>
-                )}
-            </div>
+                <div>
+                    {errors.number && errors.number.type == "pattern" && (
+                        <span style={{ color: "red" }}>
+                            Invalid phone number
+                        </span>
+                    )}
+                    {errors.number && errors.number.type == "custom" && (
+                        <span style={{ color: "red" }}>
+                            Number already exists
+                        </span>
+                    )}
+                </div>
+            </InputContainer>
             {editMode ? (
-                <>
-                    <button type="submit">Save</button>
-                    <button
+                <ButtonContainer
+                    style={{
+                        display: "flex",
+                        gap: "1em",
+                        justifyContent: "",
+                    }}
+                >
+                    <Button type="submit">
+                        <FaCheck />
+                    </Button>
+                    <Button
                         type="submit"
                         onClick={() => {
                             setDeleteNumber(true);
                         }}
                     >
-                        Delete
-                    </button>
-                    <button onClick={() => cancelEdit()}>Reset</button>
-                </>
+                        <FaTrash />
+                    </Button>
+                    <Button onClick={() => cancelEdit()}>
+                        <FaBan />
+                    </Button>
+                </ButtonContainer>
             ) : (
                 onHover && (
-                    <button onClick={() => setEditMode(true)}>
-                        Edit number
-                    </button>
+                    <Button onClick={() => setEditMode(true)}>
+                        <FaEdit /> Edit number
+                    </Button>
                 )
             )}
-        </form>
+        </FormContainer>
     );
 };
 
 export default NumberForm;
+
+const Button = styled.button`
+    background-color: transparent;
+    border: transparent;
+    cursor: pointer;
+    color: white;
+`;
+
+const ButtonContainer = styled.div`
+    display: flex;
+    gap: 1em;
+    justify-content: space-around;
+`;
+
+const FormContainer = styled.form`
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+`;
+
+const Label = styled.div`
+    color: #969ea3;
+`;
+
+const InputContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+`;
+
+const StyledInput = styled.input`
+    color: white;
+    width: 10em;
+    font-size: 20px;
+    padding: 10px;
+    background-color: transparent;
+    border-color: transparent;
+    transition: border-color 0.3s;
+    border-bottom: white solid 1px;
+
+    &:focus {
+        border: trasnparent;
+    }
+
+    &:disabled {
+        color: white;
+        background-color: transparent;
+        border-bottom: transparent;
+    }
+`;
 
 const EDIT_PHONE_NUMBER = gql`
     mutation EditPhoneNumber(

@@ -6,6 +6,7 @@ import { gql } from "@apollo/client";
 import ContactCard from "./component/ContactCard";
 import { ContactDetailType } from "./utils/ResponseType";
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
+import { FaUserPlus } from "react-icons/fa";
 
 export default function Home() {
     const { error, data, loading } = useQuery(GET_CONTACT);
@@ -73,42 +74,66 @@ export default function Home() {
 
     return (
         <MainContainer>
+            <h1>Contact List</h1>
             <ButtonsContainer>
-                <input
+                <SearchInput
                     type="text"
                     placeholder="Search..."
                     value={filterQuery}
                     onChange={handleFilter}
                 />
-                <Button>Add Contact</Button>
+                <Button>
+                    <FaUserPlus />
+                </Button>
             </ButtonsContainer>
-
-            {contactListComponent}
+            <div
+                style={{
+                    height: "31.5em",
+                    overflowY: "scroll",
+                }}
+            >
+                {contactListComponent}
+            </div>
         </MainContainer>
     );
 }
 
+const ContactCardContainer = styled.input`
+    border-color: rgb(248 250 252);
+`;
+const SearchInput = styled.input`
+    width: 100%;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    transition: border-color 0.3s;
+    &:focus {
+        border-color: #007bff;
+    }
+`;
 const MainContainer = styled.div`
-    margin-top: 2em;
-    outline: 1px solid black;
+    // outline: 1px solid black;
 `;
 
 const ButtonsContainer = styled.div`
     display: flex;
-    justify-content: flex-end;
+    gap: 5px;
 `;
 
 const Button = styled.button`
+    padding: 10px 20px;
+    background-color: #52616b;
+    color: white;
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
-    padding: 5px;
-    background-color: hotpink;
-    font-size: 16px;
-    border-radius: 4px;
-    color: black;
-    font-weight: bold;
+    transition: background-color 0.3s;
+
     &:hover {
-        color: white;
-        background-color: black;
+        background-color: #1e2022;
+    }
+
+    &:focus {
+        box-shadow: 0 0 5px #1e2022;
     }
 `;
 

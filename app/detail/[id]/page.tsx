@@ -2,17 +2,20 @@
 import ContactForm from "@/app/component/ContactForm";
 import NumberForm from "@/app/component/NumberForm";
 import { ContactByPK, ContactByPKDetail } from "@/app/utils/ResponseType";
-import { gql } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
+import { FaStar, FaPlus, FaEdit, FaTrash } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 const DetailContact: React.FC<{ params: { id: number } }> = ({ params }) => {
     const id = params.id;
-
+    const router = useRouter();
     const { loading, error, data } = useQuery(GET_DETAIL, {
         variables: { id },
     }) as { loading: boolean; error: any; data: ContactByPK };
+    const [deleteContact] = useMutation(DELETE_CONTACT);
     const [editModeContact, setEditModeContact] = useState(false);
     const [newPhoneList, setNewPhoneList] = useState<{ number: string }[] | []>(
         []
@@ -44,6 +47,15 @@ const DetailContact: React.FC<{ params: { id: number } }> = ({ params }) => {
         console.log(error);
         return <p>Error..</p>;
     }
+
+    const deleteContactFunction = async () => {
+        await deleteContact({
+            variables: {
+                id: id,
+            },
+        });
+        router.push("/");
+    };
 
     const addNewPhone = () => {
         setNewPhoneList([...newPhoneList, { number: "+62" }]);
@@ -104,27 +116,54 @@ const DetailContact: React.FC<{ params: { id: number } }> = ({ params }) => {
             />
         ));
         content = (
-            <>
-                {checkFav() ? (
-                    <button onClick={removeFav}>Remove favorites</button>
-                ) : (
-                    <button onClick={addFav}>Add to favorites</button>
-                )}
-
-                <ContactForm
-                    data={contact}
-                    editMode={editModeContact}
-                    setEditMode={setEditModeContact}
-                />
-                {!editModeContact && (
-                    <button onClick={() => setEditModeContact(true)}>
-                        Edit Contact
-                    </button>
-                )}
-                {existingPhoneComponents}
-                {newPhoneComponents}
-                <button onClick={() => addNewPhone()}>Add Contact</button>
-            </>
+            <MainContainer>
+                <ContactInfoContainer>
+                    <DetailInfoContainer>
+                        <ContactForm
+                            data={contact}
+                            editMode={editModeContact}
+                            setEditMode={setEditModeContact}
+                        />
+                    </DetailInfoContainer>
+                    <ContactInforButtonContainer>
+                        {!editModeContact && (
+                            <Button onClick={() => setEditModeContact(true)}>
+                                <FaEdit /> Edit Contact Info
+                            </Button>
+                        )}
+                    </ContactInforButtonContainer>
+                </ContactInfoContainer>
+                <PhoneNumberContainer>
+                    {existingPhoneComponents}
+                    {newPhoneComponents}
+                    <Button onClick={() => addNewPhone()}>
+                        <FaPlus /> Add New Phone Number
+                    </Button>
+                </PhoneNumberContainer>
+                <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "space-around",
+                        padding: "1em",
+                    }}
+                >
+                    {checkFav() ? (
+                        <Button onClick={removeFav}>
+                            <FaStar color={"yellow"} />
+                        </Button>
+                    ) : (
+                        <Button onClick={addFav}>
+                            <FaStar color={"white"} />
+                        </Button>
+                    )}
+                    <Button
+                        onClick={deleteContactFunction}
+                        style={{ color: "red" }}
+                    >
+                        <FaTrash /> Delete
+                    </Button>
+                </div>
+            </MainContainer>
         );
     } else {
         content = <p>Contact not found</p>;
@@ -132,11 +171,39 @@ const DetailContact: React.FC<{ params: { id: number } }> = ({ params }) => {
 
     return <div>{content}</div>;
 };
-const DetailContainer = styled.div`
+const ContactInforButtonContainer = styled.div`
+    margin: auto;
+`;
+const Button = styled.div`
+    background-color: none;
+    cursor: pointer;
+`;
+
+const ContactInfoContainer = styled.div`
+    padding: 2em;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    border-radius: 8px;
+    background-color: #374147;
+`;
+const DetailInfoContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+`;
+const PhoneNumberContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    padding: 2em;
+    background-color: #374147;
+    margin-top: 1em;
+    border-radius: 8px;
+    gap: 1.5em;
+`;
+
+const MainContainer = styled.div`
+    margin-top: 1em;
 `;
 
 const GET_DETAIL = gql`
@@ -149,6 +216,16 @@ const GET_DETAIL = gql`
             phones {
                 number
             }
+        }
+    }
+`;
+
+const DELETE_CONTACT = gql`
+    mutation MyMutation($id: Int!) {
+        delete_contact_by_pk(id: $id) {
+            first_name
+            last_name
+            id
         }
     }
 `;
