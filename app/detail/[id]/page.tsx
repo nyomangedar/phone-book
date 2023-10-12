@@ -20,11 +20,19 @@ const DetailContact: React.FC<{ params: { id: number } }> = ({ params }) => {
     const [existingPhoneList, setExistingPhone] = useState<
         { number: string }[] | []
     >([]);
+    const [fav, setFav] = useState<number[] | []>(
+        JSON.parse(localStorage.getItem("favorites") || "[]")
+    );
+
     useEffect(() => {
         if (data) {
             setExistingPhone(data.contact_by_pk.phones);
         }
     }, [data]);
+
+    useEffect(() => {
+        localStorage.setItem("favorites", JSON.stringify(fav));
+    }, [fav]);
 
     let content;
 
@@ -45,6 +53,26 @@ const DetailContact: React.FC<{ params: { id: number } }> = ({ params }) => {
             (phone, index) => index !== indexToRemove
         );
         setNewPhoneList(updatedPhoneList);
+    };
+    const addFav = () => {
+        if (typeof window !== undefined) {
+            setFav([...fav, id]);
+        }
+    };
+    const removeFav = () => {
+        if (typeof window !== undefined) {
+            const updatedFav = fav.filter((id) => id !== id);
+            setFav(updatedFav);
+        }
+    };
+    const checkFav = () => {
+        if (fav.length < 1) {
+            return false;
+        }
+        if (fav.includes(id)) {
+            return true;
+        }
+        return false;
     };
     const removeExistingPhone = (indexToRemove: number) => {
         const updatedExistingPhoneList = existingPhoneList.filter(
@@ -77,6 +105,12 @@ const DetailContact: React.FC<{ params: { id: number } }> = ({ params }) => {
         ));
         content = (
             <>
+                {checkFav() ? (
+                    <button onClick={removeFav}>Remove favorites</button>
+                ) : (
+                    <button onClick={addFav}>Add to favorites</button>
+                )}
+
                 <ContactForm
                     data={contact}
                     editMode={editModeContact}

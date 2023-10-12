@@ -56,8 +56,8 @@ export default function Home() {
         ));
         contactListComponent = (
             <>
-                {regulardsCard}
                 {favoritesCard}
+                {regulardsCard}
             </>
         );
     } else {
