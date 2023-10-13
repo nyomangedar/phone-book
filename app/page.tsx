@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import styled from "@emotion/styled";
-import { SortOutFavorites } from "./utils/sortOutFavorites";
+import { SortOutFavorites } from "./utils/SortOutFavorites";
 import ContactCard from "./component/ContactCard";
 import { ContactDetailType } from "./utils/ResponseType";
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
