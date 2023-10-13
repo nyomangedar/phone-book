@@ -1,8 +1,8 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useMutation } from "@apollo/client";
-import { ContactByPKDetail } from "../utils/ResponseType";
+import { ContactByPKDetail } from "../utils/responseType";
 import styled from "@emotion/styled";
-import { UPDATE_CONTACT } from "../utils/Request";
+import { UPDATE_CONTACT } from "../utils/request";
 
 type ContactDetailType = {
     first_name: string;

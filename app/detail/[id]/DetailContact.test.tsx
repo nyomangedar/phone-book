@@ -1,13 +1,6 @@
 import React from "react";
-import {
-    fireEvent,
-    queryByText,
-    render,
-    screen,
-    waitFor,
-} from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { MockedProvider } from "@apollo/client/testing";
-import { gql } from "@apollo/client";
 import userEvent from "@testing-library/user-event";
 import {
     GET_DETAIL,
@@ -15,7 +8,7 @@ import {
     EDIT_PHONE_NUMBER,
     ADD_PHONE_NUMBER,
     DELETE_PHONE_NUMBER,
-} from "@/app/utils/Request";
+} from "@/app/utils/request";
 
 import DetailContact from "./page";
 

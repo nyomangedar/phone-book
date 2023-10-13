@@ -1,14 +1,14 @@
 "use client";
 import ContactForm from "@/app/component/ContactForm";
 import NumberForm from "@/app/component/NumberForm";
-import { ContactByPK, ContactByPKDetail } from "@/app/utils/ResponseType";
+import { ContactByPK, ContactByPKDetail } from "@/app/utils/responseType";
 import { useMutation } from "@apollo/client";
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 import { FaStar, FaPlus, FaEdit, FaTrash } from "react-icons/fa";
 import Link from "next/link";
-import { GET_DETAIL, DELETE_CONTACT } from "@/app/utils/Request";
+import { GET_DETAIL, DELETE_CONTACT } from "@/app/utils/request";
 
 const DetailContact: React.FC<{ params: { id: number } }> = ({ params }) => {
     const id = params.id;

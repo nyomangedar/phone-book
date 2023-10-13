@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { ContactDetailType } from "../utils/ResponseType";
+import { ContactDetailType } from "../utils/responseType";
 import Link from "next/link";
 import { FaStar, FaInfoCircle } from "react-icons/fa";
 
