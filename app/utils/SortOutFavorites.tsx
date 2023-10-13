@@ -1,4 +1,4 @@
-import { ContactList, ContactDetailType } from "./responseType";
+import { ContactList, ContactDetailType } from "./ResponseType";
 
 export const SortOutFavorites = (data: ContactList, filterQuery: string) => {
     if (filterQuery !== "") {

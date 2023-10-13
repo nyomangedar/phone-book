@@ -1,6 +1,6 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useMutation } from "@apollo/client";
-import { ContactByPKDetail } from "../utils/responseType";
+import { ContactByPKDetail } from "../utils/ResponseType";
 import { useState } from "react";
 import styled from "@emotion/styled";
 import { FaPhone, FaEdit, FaCheck, FaTrash, FaBan } from "react-icons/fa";
@@ -8,7 +8,7 @@ import {
     EDIT_PHONE_NUMBER,
     ADD_PHONE_NUMBER,
     DELETE_PHONE_NUMBER,
-} from "../utils/request";
+} from "../utils/Request";
 type NumberType = {
     number: string;
 };

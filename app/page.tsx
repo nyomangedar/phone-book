@@ -1,13 +1,13 @@
 "use client";
 import { useState } from "react";
 import styled from "@emotion/styled";
-import { SortOutFavorites } from "./utils/SortOutFavorites";
+import { SortOutFavorites } from "./utils/sortOutFavorites";
 import ContactCard from "./component/ContactCard";
-import { ContactDetailType } from "./utils/responseType";
+import { ContactDetailType } from "./utils/ResponseType";
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 import { FaUserPlus } from "react-icons/fa";
 import Link from "next/link";
-import { GET_CONTACT } from "./utils/request";
+import { GET_CONTACT } from "./utils/Request";
 
 export default function Home() {
     const { error, data, loading } = useQuery(GET_CONTACT);

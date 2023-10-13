@@ -8,7 +8,7 @@ import {
     EDIT_PHONE_NUMBER,
     ADD_PHONE_NUMBER,
     DELETE_PHONE_NUMBER,
-} from "@/app/utils/request";
+} from "@/app/utils/Request";
 
 import DetailContact from "./page";
 

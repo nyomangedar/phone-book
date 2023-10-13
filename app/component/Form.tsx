@@ -1,11 +1,11 @@
 import { SubmitHandler, useForm, useFieldArray } from "react-hook-form";
 import { useLazyQuery, useMutation } from "@apollo/client";
-import { AddContactType, ContactByPKDetail } from "../utils/responseType";
+import { AddContactType, ContactByPKDetail } from "../utils/ResponseType";
 import { useState } from "react";
 import styled from "@emotion/styled";
 import { FaPlus, FaSave, FaTimes } from "react-icons/fa";
 import { useRouter } from "next/navigation";
-import { CHECK_NAME_QUERY, ADD_CONTACT } from "../utils/request";
+import { CHECK_NAME_QUERY, ADD_CONTACT } from "../utils/Request";
 
 const Form: React.FC<{
     data?: ContactByPKDetail;
