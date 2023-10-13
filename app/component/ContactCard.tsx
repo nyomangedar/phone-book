@@ -29,7 +29,10 @@ const ContactCard: React.FC<{
     );
     return (
         <MainCardDiv style={{ borderBottom: "solid 1px #52616B" }}>
-            <TitleCardDiv onClick={() => setSelected(contact.id)}>
+            <TitleCardDiv
+                data-testid={`card-title-${contact.id}`}
+                onClick={() => setSelected(contact.id)}
+            >
                 <AvatarContainer>
                     {contact.first_name[0].toUpperCase()}
                 </AvatarContainer>

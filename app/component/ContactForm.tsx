@@ -2,6 +2,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { gql, useMutation } from "@apollo/client";
 import { ContactByPKDetail } from "../utils/ResponseType";
 import styled from "@emotion/styled";
+import { UPDATE_CONTACT } from "../utils/Request";
 
 type ContactDetailType = {
     first_name: string;
@@ -52,6 +53,7 @@ const ContactForm: React.FC<{
             <div>
                 <Label>First Name</Label>
                 <StyledInput
+                    data-testid="first_name"
                     disabled={!editMode}
                     {...register("first_name", {
                         required: true,
@@ -78,6 +80,7 @@ const ContactForm: React.FC<{
             <div>
                 <Label>Last Name</Label>
                 <StyledInput
+                    data-testid="last_name"
                     disabled={!editMode}
                     {...register("last_name", {
                         required: true,
@@ -101,7 +104,11 @@ const ContactForm: React.FC<{
                 </div>
             </div>
             <ButtonContainer>
-                {editMode && <Button type="submit">Save</Button>}
+                {editMode && (
+                    <Button data-testid="save-info" type="submit">
+                        Save
+                    </Button>
+                )}
                 {editMode && <Button onClick={resetForm}>Cancel</Button>}
             </ButtonContainer>
         </FormContainer>
@@ -165,18 +172,5 @@ const StyledInput = styled.input`
         color: white;
         background-color: transparent;
         border-bottom: transparent;
-    }
-`;
-
-const UPDATE_CONTACT = gql`
-    mutation EditContactById($id: Int!, $_set: contact_set_input) {
-        update_contact_by_pk(pk_columns: { id: $id }, _set: $_set) {
-            id
-            first_name
-            last_name
-            phones {
-                number
-            }
-        }
     }
 `;

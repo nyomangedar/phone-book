@@ -36,6 +36,7 @@ export default function Home() {
         | ContactDetailType[]
         | { regulars: ContactDetailType[]; favorites: ContactDetailType[] } =
         SortOutFavorites(data, filterQuery);
+
     if (!Array.isArray(result)) {
         const regulardsCard = result.regulars
             .slice(0, 10)

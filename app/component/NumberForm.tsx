@@ -13,6 +13,10 @@ const NumberForm: React.FC<{
     existingNumber?: string;
     removePhone: (indexToRemove: number) => void;
     removeExistingPhone: (indexToRemove: number) => void;
+    submitNewPhone: (
+        indexToRemove: number,
+        newNumber: { number: string }
+    ) => void;
     index: number;
     manualEditMode?: boolean;
 }> = ({
@@ -22,12 +26,13 @@ const NumberForm: React.FC<{
     index,
     removeExistingPhone,
     manualEditMode = false,
+    submitNewPhone,
 }) => {
     const [editMode, setEditMode] = useState(manualEditMode);
     const [onHover, setOnHover] = useState(false);
     const [deleteNumberState, setDeleteNumber] = useState(false);
     const [editNumber] = useMutation(EDIT_PHONE_NUMBER);
-    const [addNumber, { error: addNewerror, reset: addNewReset }] =
+    const [addNumber, { error: addNumberError }] =
         useMutation(ADD_PHONE_NUMBER);
     const [deleteNumber] = useMutation(DELETE_PHONE_NUMBER);
     const {
@@ -61,43 +66,41 @@ const NumberForm: React.FC<{
             });
             removeExistingPhone(index);
             setDeleteNumber(false);
-            return;
         }
 
         if (existingNumber) {
-            await editNumber({
-                variables: {
-                    pk_columns: {
-                        number: existingNumber,
-                        contact_id: id,
+            try {
+                await editNumber({
+                    variables: {
+                        pk_columns: {
+                            number: existingNumber,
+                            contact_id: id,
+                        },
+                        new_phone_number: postData.number,
                     },
-                    new_phone_number: postData.number,
-                },
-                onError: (err) => {
-                    setError("number", {
-                        type: "custom",
-                        message: `Number already exists`,
-                    });
-                },
-            });
-        } else {
-            await addNumber({
-                variables: {
-                    contact_id: id,
-                    phone_number: postData.number,
-                },
-                onError: (err) => {
-                    setError("number", {
-                        type: "custom",
-                        message: `Number already exists`,
-                    });
-                },
-            });
-            if (addNewerror) {
-                return;
+                });
+                setEditMode(false);
+            } catch {
+                setError("number", {
+                    type: "custom",
+                    message: `Number already exists`,
+                });
             }
-            removePhone(index);
-            return;
+        } else {
+            try {
+                await addNumber({
+                    variables: {
+                        contact_id: id,
+                        phone_number: postData.number,
+                    },
+                });
+                removePhone(index);
+            } catch {
+                setError("number", {
+                    type: "custom",
+                    message: `Number already exists`,
+                });
+            }
         }
     };
     const cancelEdit = () => {
@@ -112,6 +115,7 @@ const NumberForm: React.FC<{
         }
         setEditMode(false);
     };
+    // console.log(existingNumber, index);
     return (
         <FormContainer
             onSubmit={handleSubmit(onSubmit)}
@@ -123,6 +127,7 @@ const NumberForm: React.FC<{
                     <FaPhone /> Mobile
                 </Label>
                 <StyledInput
+                    data-testid="number"
                     disabled={!editMode}
                     {...register("number", {
                         pattern: /^[0-9+]+$/,
@@ -149,7 +154,7 @@ const NumberForm: React.FC<{
                         justifyContent: "",
                     }}
                 >
-                    <Button type="submit">
+                    <Button type="submit" data-testid="save">
                         <FaCheck />
                     </Button>
                     <Button
@@ -157,16 +162,20 @@ const NumberForm: React.FC<{
                         onClick={() => {
                             setDeleteNumber(true);
                         }}
+                        data-testid="delete"
                     >
                         <FaTrash />
                     </Button>
-                    <Button onClick={() => cancelEdit()}>
+                    <Button onClick={() => cancelEdit()} data-testid="cancel">
                         <FaBan />
                     </Button>
                 </ButtonContainer>
             ) : (
                 onHover && (
-                    <Button onClick={() => setEditMode(true)}>
+                    <Button
+                        data-testid="edit-number"
+                        onClick={() => setEditMode(true)}
+                    >
                         <FaEdit /> Edit number
                     </Button>
                 )

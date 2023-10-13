@@ -7,12 +7,10 @@ import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 import { FaStar, FaPlus, FaEdit, FaTrash } from "react-icons/fa";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 const DetailContact: React.FC<{ params: { id: number } }> = ({ params }) => {
     const id = params.id;
-    const router = useRouter();
     const { loading, error, data } = useQuery(GET_DETAIL, {
         variables: { id },
     }) as { loading: boolean; error: any; data: ContactByPK };
@@ -49,6 +47,7 @@ const DetailContact: React.FC<{ params: { id: number } }> = ({ params }) => {
         return <p>Error..</p>;
     }
 
+    // Delete Contact
     const deleteContactFunction = async () => {
         await deleteContact({
             variables: {
@@ -57,8 +56,17 @@ const DetailContact: React.FC<{ params: { id: number } }> = ({ params }) => {
         });
     };
 
+    // Delete Number
     const addNewPhone = () => {
         setNewPhoneList([...newPhoneList, { number: "+62" }]);
+    };
+    const submitNewPhone = (
+        indexToRemove: number,
+        newNumber: { number: string }
+    ) => {
+        const updatedPhoneList = newPhoneList;
+        updatedPhoneList[indexToRemove] = newNumber;
+        setNewPhoneList([updatedPhoneList]);
     };
     const removePhone = (indexToRemove: number) => {
         const updatedPhoneList = newPhoneList.filter(
@@ -66,6 +74,16 @@ const DetailContact: React.FC<{ params: { id: number } }> = ({ params }) => {
         );
         setNewPhoneList(updatedPhoneList);
     };
+
+    const removeExistingPhone = (indexToRemove: number) => {
+        console.log(indexToRemove, existingPhoneList);
+        const updatedExistingPhoneList = existingPhoneList.filter(
+            (phone, index) => index !== indexToRemove
+        );
+        setExistingPhone(updatedExistingPhoneList);
+    };
+
+    // Favorite function
     const addFav = () => {
         if (typeof window !== undefined) {
             setFav([...fav, id]);
@@ -86,35 +104,36 @@ const DetailContact: React.FC<{ params: { id: number } }> = ({ params }) => {
         }
         return false;
     };
-    const removeExistingPhone = (indexToRemove: number) => {
-        const updatedExistingPhoneList = existingPhoneList.filter(
-            (phone, index) => index !== indexToRemove
-        );
-        setExistingPhone(updatedExistingPhoneList);
-    };
 
     const contact: ContactByPKDetail = data.contact_by_pk;
     if (contact) {
-        const newPhoneComponents = newPhoneList.map((data, index) => (
-            <NumberForm
-                index={index}
-                key={data.number}
-                data={contact}
-                removePhone={removePhone}
-                removeExistingPhone={removeExistingPhone}
-                manualEditMode={true}
-            />
-        ));
-        const existingPhoneComponents = existingPhoneList.map((data, index) => (
-            <NumberForm
-                key={index}
-                index={index}
-                data={contact}
-                existingNumber={data.number}
-                removePhone={removePhone}
-                removeExistingPhone={removeExistingPhone}
-            />
-        ));
+        const newPhoneComponents = newPhoneList.map((data, index) => {
+            return (
+                <NumberForm
+                    index={index}
+                    key={index}
+                    data={contact}
+                    removePhone={removePhone}
+                    removeExistingPhone={removeExistingPhone}
+                    manualEditMode={true}
+                    submitNewPhone={submitNewPhone}
+                />
+            );
+        });
+        const existingPhoneComponents = existingPhoneList.map((data, index) => {
+            // console.log(data, index);
+            return (
+                <NumberForm
+                    key={index}
+                    index={index}
+                    data={contact}
+                    existingNumber={data.number}
+                    removePhone={removePhone}
+                    removeExistingPhone={removeExistingPhone}
+                    submitNewPhone={submitNewPhone}
+                />
+            );
+        });
         content = (
             <MainContainer>
                 <ContactInfoContainer>
@@ -127,7 +146,10 @@ const DetailContact: React.FC<{ params: { id: number } }> = ({ params }) => {
                     </DetailInfoContainer>
                     <ContactInforButtonContainer>
                         {!editModeContact && (
-                            <Button onClick={() => setEditModeContact(true)}>
+                            <Button
+                                data-testid="edit-info"
+                                onClick={() => setEditModeContact(true)}
+                            >
                                 <FaEdit /> Edit Contact Info
                             </Button>
                         )}
@@ -136,7 +158,10 @@ const DetailContact: React.FC<{ params: { id: number } }> = ({ params }) => {
                 <PhoneNumberContainer>
                     {existingPhoneComponents}
                     {newPhoneComponents}
-                    <Button onClick={() => addNewPhone()}>
+                    <Button
+                        data-testid="add-number"
+                        onClick={() => addNewPhone()}
+                    >
                         <FaPlus /> Add New Phone Number
                     </Button>
                 </PhoneNumberContainer>

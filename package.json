@@ -6,13 +6,15 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "jest"
   },
   "dependencies": {
     "@apollo/client": "3.8.0-rc.2",
     "@apollo/experimental-nextjs-app-support": "^0.4.3",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@testing-library/user-event": "^14.5.1",
     "graphql": "^16.8.1",
     "next": "13.5.4",
     "phone-book": "link:",
@@ -22,11 +24,15 @@
     "react-icons": "^4.11.0"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.1.4",
+    "@testing-library/react": "^14.0.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "13.5.4",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "typescript": "^5"
   }
 }
