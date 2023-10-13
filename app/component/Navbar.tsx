@@ -1,6 +1,5 @@
 "use client";
 import styled from "@emotion/styled";
-import { css } from "@emotion/react";
 import Link from "next/link";
 
 const NavbarContainer = styled.div`

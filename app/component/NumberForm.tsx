@@ -1,10 +1,14 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { ContactByPKDetail } from "../utils/ResponseType";
 import { useState } from "react";
 import styled from "@emotion/styled";
 import { FaPhone, FaEdit, FaCheck, FaTrash, FaBan } from "react-icons/fa";
-
+import {
+    EDIT_PHONE_NUMBER,
+    ADD_PHONE_NUMBER,
+    DELETE_PHONE_NUMBER,
+} from "../utils/Request";
 type NumberType = {
     number: string;
 };
@@ -233,57 +237,5 @@ const StyledInput = styled.input`
         color: white;
         background-color: transparent;
         border-bottom: transparent;
-    }
-`;
-
-const EDIT_PHONE_NUMBER = gql`
-    mutation EditPhoneNumber(
-        $pk_columns: phone_pk_columns_input!
-        $new_phone_number: String!
-    ) {
-        update_phone_by_pk(
-            pk_columns: $pk_columns
-            _set: { number: $new_phone_number }
-        ) {
-            contact {
-                id
-                last_name
-                first_name
-                created_at
-                phones {
-                    number
-                }
-            }
-        }
-    }
-`;
-
-const ADD_PHONE_NUMBER = gql`
-    mutation AddNumberToContact($contact_id: Int!, $phone_number: String!) {
-        insert_phone(
-            objects: { contact_id: $contact_id, number: $phone_number }
-        ) {
-            returning {
-                contact {
-                    id
-                    last_name
-                    first_name
-                    phones {
-                        number
-                    }
-                }
-            }
-        }
-    }
-`;
-
-const DELETE_PHONE_NUMBER = gql`
-    mutation DeletePhoneByPK($contact_id: Int!, $number: String!) {
-        delete_phone_by_pk(contact_id: $contact_id, number: $number) {
-            contact_id
-            created_ad
-            id
-            number
-        }
     }
 `;

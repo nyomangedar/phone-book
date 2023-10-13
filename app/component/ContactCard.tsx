@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled from "@emotion/styled";
 import { ContactDetailType } from "../utils/ResponseType";
 import Link from "next/link";

@@ -2,12 +2,13 @@
 import ContactForm from "@/app/component/ContactForm";
 import NumberForm from "@/app/component/NumberForm";
 import { ContactByPK, ContactByPKDetail } from "@/app/utils/ResponseType";
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 import { FaStar, FaPlus, FaEdit, FaTrash } from "react-icons/fa";
 import Link from "next/link";
+import { GET_DETAIL, DELETE_CONTACT } from "@/app/utils/Request";
 
 const DetailContact: React.FC<{ params: { id: number } }> = ({ params }) => {
     const id = params.id;
@@ -232,30 +233,6 @@ const PhoneNumberContainer = styled.div`
 
 const MainContainer = styled.div`
     margin-top: 1em;
-`;
-
-const GET_DETAIL = gql`
-    query GetContactDetail($id: Int!) {
-        contact_by_pk(id: $id) {
-            last_name
-            id
-            first_name
-            created_at
-            phones {
-                number
-            }
-        }
-    }
-`;
-
-const DELETE_CONTACT = gql`
-    mutation MyMutation($id: Int!) {
-        delete_contact_by_pk(id: $id) {
-            first_name
-            last_name
-            id
-        }
-    }
 `;
 
 export default DetailContact;

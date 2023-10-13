@@ -1,10 +1,11 @@
 import { SubmitHandler, useForm, useFieldArray } from "react-hook-form";
-import { useLazyQuery, useMutation, gql } from "@apollo/client";
+import { useLazyQuery, useMutation } from "@apollo/client";
 import { AddContactType, ContactByPKDetail } from "../utils/ResponseType";
 import { useState } from "react";
 import styled from "@emotion/styled";
 import { FaPlus, FaSave, FaTimes } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import { CHECK_NAME_QUERY, ADD_CONTACT } from "../utils/Request";
 
 const Form: React.FC<{
     data?: ContactByPKDetail;
@@ -220,31 +221,4 @@ const IconButton = styled.button`
     gap: 8px;
 `;
 
-const CHECK_NAME_QUERY = gql`
-    query GetContactList($where: contact_bool_exp) {
-        contact(where: $where) {
-            id
-        }
-    }
-`;
-
-const ADD_CONTACT = gql`
-    mutation AddContactWithPhones(
-        $first_name: String!
-        $last_name: String!
-        $phones: [phone_insert_input!]!
-    ) {
-        insert_contact(
-            objects: {
-                first_name: $first_name
-                last_name: $last_name
-                phones: { data: $phones }
-            }
-        ) {
-            returning {
-                id
-            }
-        }
-    }
-`;
 export default Form;

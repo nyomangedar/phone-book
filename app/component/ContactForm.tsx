@@ -1,5 +1,5 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { ContactByPKDetail } from "../utils/ResponseType";
 import styled from "@emotion/styled";
 import { UPDATE_CONTACT } from "../utils/Request";

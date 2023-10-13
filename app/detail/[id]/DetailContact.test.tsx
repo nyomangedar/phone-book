@@ -9,87 +9,16 @@ import {
 import { MockedProvider } from "@apollo/client/testing";
 import { gql } from "@apollo/client";
 import userEvent from "@testing-library/user-event";
+import {
+    GET_DETAIL,
+    UPDATE_CONTACT,
+    EDIT_PHONE_NUMBER,
+    ADD_PHONE_NUMBER,
+    DELETE_PHONE_NUMBER,
+} from "@/app/utils/Request";
 
 import DetailContact from "./page";
 
-const DELETE_PHONE_NUMBER = gql`
-    mutation DeletePhoneByPK($contact_id: Int!, $number: String!) {
-        delete_phone_by_pk(contact_id: $contact_id, number: $number) {
-            contact_id
-            created_ad
-            id
-            number
-        }
-    }
-`;
-
-const ADD_PHONE_NUMBER = gql`
-    mutation AddNumberToContact($contact_id: Int!, $phone_number: String!) {
-        insert_phone(
-            objects: { contact_id: $contact_id, number: $phone_number }
-        ) {
-            returning {
-                contact {
-                    id
-                    last_name
-                    first_name
-                    phones {
-                        number
-                    }
-                }
-            }
-        }
-    }
-`;
-
-const GET_DETAIL = gql`
-    query GetContactDetail($id: Int!) {
-        contact_by_pk(id: $id) {
-            last_name
-            id
-            first_name
-            created_at
-            phones {
-                number
-            }
-        }
-    }
-`;
-
-const UPDATE_CONTACT = gql`
-    mutation EditContactById($id: Int!, $_set: contact_set_input) {
-        update_contact_by_pk(pk_columns: { id: $id }, _set: $_set) {
-            id
-            first_name
-            last_name
-            phones {
-                number
-            }
-        }
-    }
-`;
-
-const EDIT_PHONE_NUMBER = gql`
-    mutation EditPhoneNumber(
-        $pk_columns: phone_pk_columns_input!
-        $new_phone_number: String!
-    ) {
-        update_phone_by_pk(
-            pk_columns: $pk_columns
-            _set: { number: $new_phone_number }
-        ) {
-            contact {
-                id
-                last_name
-                first_name
-                created_at
-                phones {
-                    number
-                }
-            }
-        }
-    }
-`;
 const update_var = {
     first_name: "Doe",
     last_name: "John",

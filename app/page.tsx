@@ -2,12 +2,12 @@
 import { useState } from "react";
 import styled from "@emotion/styled";
 import { SortOutFavorites } from "./utils/SortOutFavorites";
-import { gql } from "@apollo/client";
 import ContactCard from "./component/ContactCard";
 import { ContactDetailType } from "./utils/ResponseType";
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 import { FaUserPlus } from "react-icons/fa";
 import Link from "next/link";
+import { GET_CONTACT } from "./utils/Request";
 
 export default function Home() {
     const { error, data, loading } = useQuery(GET_CONTACT);
@@ -102,9 +102,6 @@ export default function Home() {
     );
 }
 
-const ContactCardContainer = styled.input`
-    border-color: rgb(248 250 252);
-`;
 const SearchInput = styled.input`
     width: 100%;
     border: 2px solid #ccc;
@@ -138,31 +135,5 @@ const Button = styled.button`
 
     &:focus {
         box-shadow: 0 0 5px #1e2022;
-    }
-`;
-
-const GET_CONTACT = gql`
-    query GetContactList(
-        $distinct_on: [contact_select_column!]
-        $limit: Int
-        $offset: Int
-        $order_by: [contact_order_by!]
-        $where: contact_bool_exp
-    ) {
-        contact(
-            distinct_on: $distinct_on
-            limit: $limit
-            offset: $offset
-            order_by: $order_by
-            where: $where
-        ) {
-            created_at
-            first_name
-            id
-            last_name
-            phones {
-                number
-            }
-        }
     }
 `;
