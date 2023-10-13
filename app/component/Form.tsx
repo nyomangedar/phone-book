@@ -4,6 +4,7 @@ import { AddContactType, ContactByPKDetail } from "../utils/ResponseType";
 import { useState } from "react";
 import styled from "@emotion/styled";
 import { FaPlus, FaSave, FaTimes } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 const Form: React.FC<{
     data?: ContactByPKDetail;
@@ -25,6 +26,7 @@ const Form: React.FC<{
             phones: data?.phones,
         },
     });
+    const router = useRouter();
 
     const onSubmit: SubmitHandler<AddContactType> = async (postData) => {
         const { data } = await checkName({
@@ -54,11 +56,15 @@ const Form: React.FC<{
                 },
             });
             setLoading(false);
+            router.push(`/detail/${data.insert_contact.returning[0].id}`);
         }
     };
     const { fields, append, remove } = useFieldArray({
         control,
         name: "phones",
+        rules: {
+            minLength: 1,
+        },
     });
     if (submitLoading) {
         return <p>Loading...</p>;

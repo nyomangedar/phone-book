@@ -4,8 +4,9 @@ import { css } from "@emotion/react";
 import Link from "next/link";
 
 const NavbarContainer = styled.div`
+    margin-top: 1em;
+    margin-bottom: 1em;
     border-radius: 8px;
-    position: sticky;
     top: 0;
     padding: 3px;
     background-color: #52616b;

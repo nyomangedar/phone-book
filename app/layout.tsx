@@ -21,7 +21,7 @@ export default function RootLayout({
         <html lang="en">
             <body
                 className={inter.className}
-                style={{ width: "800px", margin: "auto" }}
+                style={{ maxWidth: "800px", margin: "auto", padding: "5px" }}
             >
                 <ApolloWrapper>
                     <Navbar />

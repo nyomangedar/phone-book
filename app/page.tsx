@@ -7,6 +7,7 @@ import ContactCard from "./component/ContactCard";
 import { ContactDetailType } from "./utils/ResponseType";
 import { useQuery } from "@apollo/experimental-nextjs-app-support/ssr";
 import { FaUserPlus } from "react-icons/fa";
+import Link from "next/link";
 
 export default function Home() {
     const { error, data, loading } = useQuery(GET_CONTACT);
@@ -82,14 +83,16 @@ export default function Home() {
                     value={filterQuery}
                     onChange={handleFilter}
                 />
-                <Button>
-                    <FaUserPlus />
-                </Button>
+                <Link href={"/form/add"}>
+                    <Button>
+                        <FaUserPlus />
+                    </Button>
+                </Link>
             </ButtonsContainer>
             <div
                 style={{
                     height: "31.5em",
-                    overflowY: "scroll",
+                    overflowY: "auto",
                 }}
             >
                 {contactListComponent}

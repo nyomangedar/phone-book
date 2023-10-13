@@ -8,6 +8,7 @@ import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
 import { FaStar, FaPlus, FaEdit, FaTrash } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const DetailContact: React.FC<{ params: { id: number } }> = ({ params }) => {
     const id = params.id;
@@ -54,7 +55,6 @@ const DetailContact: React.FC<{ params: { id: number } }> = ({ params }) => {
                 id: id,
             },
         });
-        router.push("/");
     };
 
     const addNewPhone = () => {
@@ -156,12 +156,15 @@ const DetailContact: React.FC<{ params: { id: number } }> = ({ params }) => {
                             <FaStar color={"white"} />
                         </Button>
                     )}
-                    <Button
-                        onClick={deleteContactFunction}
-                        style={{ color: "red" }}
-                    >
-                        <FaTrash /> Delete
-                    </Button>
+
+                    <Link href={"/"}>
+                        <Button
+                            onClick={deleteContactFunction}
+                            style={{ color: "red" }}
+                        >
+                            <FaTrash /> Delete
+                        </Button>
+                    </Link>
                 </div>
             </MainContainer>
         );
