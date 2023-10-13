@@ -113,3 +113,31 @@ export const DELETE_PHONE_NUMBER = gql`
         }
     }
 `;
+
+export const CHECK_NAME_QUERY = gql`
+    query GetContactList($where: contact_bool_exp) {
+        contact(where: $where) {
+            id
+        }
+    }
+`;
+
+export const ADD_CONTACT = gql`
+    mutation AddContactWithPhones(
+        $first_name: String!
+        $last_name: String!
+        $phones: [phone_insert_input!]!
+    ) {
+        insert_contact(
+            objects: {
+                first_name: $first_name
+                last_name: $last_name
+                phones: { data: $phones }
+            }
+        ) {
+            returning {
+                id
+            }
+        }
+    }
+`;
